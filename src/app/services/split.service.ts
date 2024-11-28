@@ -52,7 +52,7 @@ export class SplitService {
 
       let minutes : number = Math.floor((seconds - this.scndPerHour)/ this.scndPerMinute);
 
-      let second : number = seconds - this.scndPerHour - (minutes * this.scndPerMinutess);
+      let second : number = seconds - this.scndPerHour - (minutes * this.scndPerMinute);
 
       return {
         hour: hour,
