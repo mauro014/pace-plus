@@ -1,0 +1,43 @@
+<section>
+    <h1>Splits Calculator</h1>
+    <form>
+        Distance (2-99): <input type="number" [(ngModel)]="distance" name="distance"><br />
+        Time: <input type="number" [(ngModel)]="time.hour" name="hour">
+        :<input type="number" [(ngModel)]="time.minute" name="minute">
+        :<input type="number" [(ngModel)]="time.second" name="second"><br>
+        <button class="primary" type="button" (click)="calculateSplits()">Search</button>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 100px;">
+                        KM
+                    </th>
+                    <th style="width: 100px;">
+                        Split
+                    </th>
+                    <th style="width: 100px;">
+                        LAP
+                    </th>
+                    <th style="width: 100px;">
+                        Average
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (split of splitList; track split.id) {
+                <tr>
+                    <td>{{ split.id }}</td>
+                    <td>{{ split.split.hour }}:{{ split.split.minute }}:{{split.split.second }}</td>
+                    <td>{{ split.lap.hour }}:{{ split.lap.minute }}:{{split.lap.second }}</td>
+                    <td>{{ split.average.hour }}:{{ split.average.minute }}:{{split.average.second }}</td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td>There are no items.</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </form>
+</section>
