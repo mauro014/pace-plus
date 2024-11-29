@@ -48,11 +48,12 @@ export class SplitService {
   convertLong2Time(seconds: number) : Time{
 
     if(seconds > 0){
+
       let hour : number =  Math.floor( seconds / this.scndPerHour);
 
-      let minutes : number = Math.floor((seconds - this.scndPerHour)/ this.scndPerMinute);
+      let minutes : number = Math.floor((seconds - ( hour * this.scndPerHour))/ this.scndPerMinute);
 
-      let second : number = seconds - this.scndPerHour - (minutes * this.scndPerMinute);
+      let second : number = seconds - ( hour * this.scndPerHour) - (minutes * this.scndPerMinute);
 
       return {
         hour: hour,
