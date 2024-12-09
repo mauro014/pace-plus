@@ -5,16 +5,15 @@ import { Time } from '../models/time';
 @Injectable({
   providedIn: 'root'
 })
-
 export class SplitService {
 
-  constructor() { };
+  constructor() { }
 
   calculateSplits(distance: number, totalTime: Time, strategy: string) : Split[] | undefined {
 
     let totalSeconds : number = totalTime.time2Seconds();
     let splitList: Split[] = [];
-    let increaseRate : number = 0.008;
+    let increaseRate : number = 0.007;
     let cumulativeSeconds : number  = 0;
 
     let baseRate = (distance-1)/2;
@@ -45,5 +44,5 @@ export class SplitService {
 
     return splitList;
   }
-    
+  
 }

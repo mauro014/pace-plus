@@ -1,5 +1,6 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { Split } from '../../interfaces/split';
 import { SplitService } from '../../services/split.service';
 import { Time } from '../../models/time';
@@ -12,11 +13,13 @@ import { Time } from '../../models/time';
   styleUrl: './splits-calculator.component.scss'
 })
 export class SplitsCalculatorComponent {
-  splitList: Split[] | undefined = [];
+
+  splitService = inject(SplitService);
+
   @Input() time! : Time;
   @Input() distance! : number;
   @Input() strategy! : string;
-  splitService = inject(SplitService);
+  splitList: Split[] | undefined = [];
 
   constructor() { 
     this.distance = 10;
