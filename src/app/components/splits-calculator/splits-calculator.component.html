@@ -2,9 +2,16 @@
     <h1>Splits Calculator</h1>
     <form>
         Distance (2-99): <input type="number" [(ngModel)]="distance" name="distance"><br />
-        Time: <input type="number" [(ngModel)]="time.hour" name="hour">
-        :<input type="number" [(ngModel)]="time.minute" name="minute">
-        :<input type="number" [(ngModel)]="time.second" name="second"><br>
+        Time: <input type="number" [(ngModel)]="time.hours" name="hour">
+        :<input type="number" [(ngModel)]="time.minutes" name="minute">
+        :<input type="number" [(ngModel)]="time.seconds" name="second"><br>
+        Race strategy: 
+        <select [(ngModel)]="strategy" name="strategy">
+            <option value="neg">Negative</option>
+            <option value="ntrl">Neutral</option>
+            <option value="pst">Positive</option>
+        </select>
+        <br />
         <button class="primary" type="button" (click)="calculateSplits()">Search</button>
         <table>
             <thead>
@@ -26,10 +33,10 @@
             <tbody>
                 @for (split of splitList; track split.id) {
                 <tr>
-                    <td>{{ split.id }}</td>
-                    <td>{{ split.split.hour }}:{{ split.split.minute }}:{{split.split.second }}</td>
-                    <td>{{ split.lap.hour }}:{{ split.lap.minute }}:{{split.lap.second }}</td>
-                    <td>{{ split.average.hour }}:{{ split.average.minute }}:{{split.average.second }}</td>
+                    <td>{{ split.distance }}</td>
+                    <td>{{ split.split.convert2String() }}</td>
+                    <td>{{ split.lap.convert2String() }}</td>
+                    <td>{{ split.average.convert2String() }}</td>
                 </tr>
                 } @empty {
                 <tr>

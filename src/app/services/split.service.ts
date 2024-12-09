@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Split } from '../interfaces/split';
-import { Time } from '../interfaces/time';
+import { Time } from '../models/time';
 
 @Injectable({
   providedIn: 'root'
@@ -8,65 +8,42 @@ import { Time } from '../interfaces/time';
 
 export class SplitService {
 
-  scndPerHour : number = 60 * 60;
-  scndPerMinute : number = 60;
-
   constructor() { };
 
-  calculateSplits(distance: number, time: Time) : Split[] | undefined {
+  calculateSplits(distance: number, totalTime: Time, strategy: string) : Split[] | undefined {
 
-    let totalTime : number = (time.hour * this.scndPerHour) + (time.minute * this.scndPerMinute) + time.second ;
-
-    let intervalTime = totalTime / distance;
-
-    let average : Time = this.convertLong2Time(intervalTime);
-
+    let totalSeconds : number = totalTime.time2Seconds();
     let splitList: Split[] = [];
+    let increaseRate : number = 0.008;
+    let cumulativeSeconds : number  = 0;
+
+    let baseRate = (distance-1)/2;
+
+    let baseTimePerSegment : number  = (totalSeconds / distance) * Math.pow(1 + increaseRate,-baseRate);
     
     for (let i = 0; i < distance; i++) {
+
+      let adjustment = Math.round(baseTimePerSegment * (1 + increaseRate * i));
+
+      if (i == distance - 1)
+      {
+        adjustment  = totalSeconds - cumulativeSeconds;
+      }
+
+      cumulativeSeconds = cumulativeSeconds + adjustment ;
+
       splitList.push(
         {
           id: i,
-          split: {
-            hour: 1,
-            minute: 1,
-            second: i,
-          },
-          lap: {
-            hour: 1,
-            minute: 1,
-            second: i,
-          },
-          average
+          distance: i + 1,
+          split: Time.seconds2Time(cumulativeSeconds),
+          lap: Time.seconds2Time(adjustment),
+          average: Time.seconds2Time(cumulativeSeconds / (i + 1))
         }
       )
     }
 
     return splitList;
   }
-
-  convertLong2Time(seconds: number) : Time{
-
-    if(seconds > 0){
-
-      let hour : number =  Math.floor( seconds / this.scndPerHour);
-
-      let minutes : number = Math.floor((seconds - ( hour * this.scndPerHour))/ this.scndPerMinute);
-
-      let second : number = seconds - ( hour * this.scndPerHour) - (minutes * this.scndPerMinute);
-
-      return {
-        hour: hour,
-        minute: minutes,
-        second: second
-      }
-    }
-    else{
-      return {
-        hour: 0,
-        minute: 0,
-        second: 0
-      }
-    }
-  }
+    
 }
