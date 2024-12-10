@@ -9,35 +9,35 @@ export class SplitService {
 
   constructor() { }
 
-  calculateSplits(distance: number, totalTime: Time, strategy: string) : Split[] | undefined {
+  calculateSplits(distance: number, totalTime: Time, strategy: number) : Split[] | undefined {
 
     let totalSeconds : number = totalTime.time2Seconds();
     let splitList: Split[] = [];
-    let increaseRate : number = 0.007;
-    let cumulativeSeconds : number  = 0;
+    let accumulatedSeconds : number  = 0;
 
     let baseRate = (distance-1)/2;
+    let firstSegmentTime : number  = (totalSeconds / distance) * Math.pow(1 + strategy,-baseRate);
 
-    let baseTimePerSegment : number  = (totalSeconds / distance) * Math.pow(1 + increaseRate,-baseRate);
+    let segmentTime = 0;
     
     for (let i = 0; i < distance; i++) {
 
-      let adjustment = Math.round(baseTimePerSegment * (1 + increaseRate * i));
+      segmentTime = i == 0 ? firstSegmentTime : segmentTime * (1 + strategy);
 
       if (i == distance - 1)
       {
-        adjustment  = totalSeconds - cumulativeSeconds;
+        segmentTime  = totalSeconds - accumulatedSeconds;
       }
 
-      cumulativeSeconds = cumulativeSeconds + adjustment ;
+      accumulatedSeconds = accumulatedSeconds + segmentTime ;
 
       splitList.push(
         {
           id: i,
           distance: i + 1,
-          split: Time.seconds2Time(cumulativeSeconds),
-          lap: Time.seconds2Time(adjustment),
-          average: Time.seconds2Time(cumulativeSeconds / (i + 1))
+          split: Time.seconds2Time(accumulatedSeconds),
+          lap: Time.seconds2Time(segmentTime),
+          average: Time.seconds2Time(accumulatedSeconds / (i + 1))
         }
       )
     }

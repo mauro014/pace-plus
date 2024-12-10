@@ -7,9 +7,13 @@
         :<input type="number" [(ngModel)]="time.seconds" name="second"><br>
         Race strategy: 
         <select [(ngModel)]="strategy" name="strategy">
-            <option value="neg">Negative</option>
-            <option value="ntrl">Neutral</option>
-            <option value="pst">Positive</option>
+            <option value="-0.011">Ultra Negative</option>
+            <option value="-0.0075">Very Negative</option>
+            <option value="-0.004">Negative</option>
+            <option value="0">Neutral</option>
+            <option value="0.004">Positive</option>
+            <option value="0.0075">Very Positive</option>
+            <option value="0.011">Ultra Positive</option>
         </select>
         <br />
         <button class="primary" type="button" (click)="calculateSplits()">Search</button>

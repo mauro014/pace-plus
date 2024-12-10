@@ -18,17 +18,17 @@ export class SplitsCalculatorComponent {
 
   @Input() time! : Time;
   @Input() distance! : number;
-  @Input() strategy! : string;
+  @Input() strategy! : number;
   splitList: Split[] | undefined = [];
 
   constructor() { 
     this.distance = 10;
     this.time = new Time();
-    this.strategy = "ntrl";
+    this.strategy = 0;
   }
 
   calculateSplits(){
-    this.splitList = this.splitService.calculateSplits(this.distance, this.time, this.strategy);
+    this.splitList = this.splitService.calculateSplits(this.distance, this.time,  Number(this.strategy));
   }
 
 }
